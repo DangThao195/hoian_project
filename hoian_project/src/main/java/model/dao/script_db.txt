@@ -1,0 +1,45 @@
+CREATE DATABASE hoian_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE hoian_db;
+
+-- Bảng người dùng (dùng UUID)
+CREATE TABLE user (
+    id CHAR(100) PRIMARY KEY DEFAULT (UUID()),
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user','admin') DEFAULT 'user',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng di tích
+CREATE TABLE monument (
+    id CHAR(100) PRIMARY KEY DEFAULT (UUID()),
+    name NVARCHAR(255) NOT NULL,
+    description TEXT,
+    location NVARCHAR(255),
+    image_url VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng bình luận
+CREATE TABLE comment (
+    id CHAR(100) PRIMARY KEY DEFAULT (UUID()),
+    user_id CHAR(36),
+    monument_id CHAR(36),
+    star int,
+    content NVARCHAR(500),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (monument_id) REFERENCES monument(id)
+);
+
+-- Bảng lưu tác vụ convert PDF -> DOCX
+CREATE TABLE convert_task (
+    id CHAR(100) PRIMARY KEY DEFAULT (UUID()),
+    user_id CHAR(36),
+    input_file_path VARCHAR(255),
+    output_file_path VARCHAR(255),
+    status ENUM('PENDING','PROCESSING','DONE','ERROR') DEFAULT 'PENDING',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    finished_at DATETIME NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);

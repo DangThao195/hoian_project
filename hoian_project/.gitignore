@@ -1,0 +1,21 @@
+# === Eclipse workspace ===
+.metadata/
+Servers/
+.settings/
+*.classpath
+*.project
+
+# === Build output ===
+/target/
+/bin/
+
+# === Logs, temporary files ===
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# === IDE configs ===
+.vscode/
+.idea/
